@@ -1,4 +1,4 @@
-import admin from '../config/firebaseConfig';
+import { firebaseMessaging } from '../config/firebaseConfig';
 import Notification from '../models/Notification';
 import { Request, Response } from 'express';
 
@@ -23,7 +23,7 @@ export const sendNotification = async (req: Request, res: Response) => {
       },
     };
 
-    await admin.messaging().send(payload);
+    await firebaseMessaging.send(payload);
 
     res.status(200).json({ message: 'Notification sent successfully', notification });
   } catch (error: any) {

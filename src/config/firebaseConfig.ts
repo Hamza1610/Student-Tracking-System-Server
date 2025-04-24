@@ -1,17 +1,22 @@
 import admin from 'firebase-admin';
-import dotenv from 'dotenv';
+import { ServiceAccount } from 'firebase-admin';
+import serviceAccountPath from '../../student-track-app-firebase-adminsdk-fbsvc-f01d3a916d.json';
 
-dotenv.config();
+let firebaseApp: admin.app.App;
 
-// Initialize Firebase Admin SDK
 if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    }),
-  });
+  firebaseApp = admin.initializeApp(
+    {
+      credential: admin.credential.cert(serviceAccountPath as ServiceAccount),
+    },
+    'student-tracker'
+  );
+} else {
+  console.log('Firebase app already initialized.');
+  firebaseApp = admin.app('student-tracker'); // 👈 ensure we get the named app instance
 }
 
-export default admin;
+// Now use this app explicitly if needed:
+export const firebaseAuth = firebaseApp.auth();
+export const firebaseDB = firebaseApp.firestore(); 
+export const firebaseMessaging = firebaseApp.messaging();
