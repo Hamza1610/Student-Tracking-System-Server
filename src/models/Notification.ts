@@ -10,7 +10,7 @@ export interface INotification extends Document {
 const NotificationSchema: Schema = new Schema({
   title: { type: String, required: true },
   message: { type: String, required: true },
-  recipientId: { type: mongoose.Schema.Types.ObjectId, ref: 'Student', required: true },
+  recipientId: { type: String, ref: 'Student', required: true },
   sentAt: { type: Date, default: Date.now },
 });
 
