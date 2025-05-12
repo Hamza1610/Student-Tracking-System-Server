@@ -1,4 +1,5 @@
 import { firebaseMessaging } from '../config/firebaseConfig';
+import { sendEmail } from '../config/nodemailer.config';
 import Notification from '../models/Notification';
 import { Request, Response } from 'express';
 
@@ -16,15 +17,18 @@ export const sendEmergencyAlert = async (req: Request, res: Response) => {
     });
 
     // Send notification via FCM
-    const payload = {
-      token: userFCMToken, // recipient id is the token goten from firebase on the mobile screen
-      notification: {
-        title,
-        body: message,
-      },
-    };
+    // const payload = {
+    //   token: userFCMToken, // recipient id is the token goten from firebase on the mobile screen
+    //   notification: {
+    //     title,
+    //     body: message,
+    //   },
+    // };
 
-    await firebaseMessaging.send(payload);
+    const userEmail = "aishajuluri@gmail.com";
+    // const userEmail = "muhammadhamza162003@gmail.com";
+    await sendEmail({to:userEmail , subject: title, html: message});
+    // await firebaseMessaging.send(payload);
 
     res.status(200).json({ message: 'Notification sent successfully', notification });
   } catch (error: any) {
