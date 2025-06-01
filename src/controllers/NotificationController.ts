@@ -25,8 +25,8 @@ export const sendEmergencyAlert = async (req: Request, res: Response) => {
     //   },
     // };
 
-    // const userEmail = "aishajuluri@gmail.com";
-    const userEmail = "muhammadhamza162003@gmail.com";
+    const userEmail = "aishajuluri@gmail.com";
+    // const userEmail = "muhammadhamza162003@gmail.com";
     await sendEmail({to:userEmail , subject: title, html: message, location: req.body.location});
     // await firebaseMessaging.send(payload);
 
