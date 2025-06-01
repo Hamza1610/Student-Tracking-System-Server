@@ -5,7 +5,7 @@ import { Request, Response } from 'express';
 
 // Send a notification
 export const sendEmergencyAlert = async (req: Request, res: Response) => {
-  const { title, message, recipientId, userFCMToken } = req.body;
+  const { title, message, recipientId } = req.body;
 
   try {
     console.log("Request body:", req.body);
@@ -25,9 +25,9 @@ export const sendEmergencyAlert = async (req: Request, res: Response) => {
     //   },
     // };
 
-    const userEmail = "aishajuluri@gmail.com";
-    // const userEmail = "muhammadhamza162003@gmail.com";
-    await sendEmail({to:userEmail , subject: title, html: message});
+    // const userEmail = "aishajuluri@gmail.com";
+    const userEmail = "muhammadhamza162003@gmail.com";
+    await sendEmail({to:userEmail , subject: title, html: message, location: req.body.location});
     // await firebaseMessaging.send(payload);
 
     res.status(200).json({ message: 'Notification sent successfully', notification });
