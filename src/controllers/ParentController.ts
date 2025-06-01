@@ -8,7 +8,23 @@ export const createParent = async (req: Request, res: Response) => {
   try {
     console.log("Creating parent with data:", req.body);
     
-    const parent = Parent.create(req.body);
+    // Check if email exists in Parent collection
+    const existingParent = await Parent.findOne({ email: req.body.email });
+    if (existingParent) {
+      return res.status(400).json({ 
+        error: 'Email already registered as a parent' 
+      });
+    }
+
+    // Check if email exists in Student collection
+    const existingStudent = await Student.findOne({ email: req.body.email });
+    if (existingStudent) {
+      return res.status(400).json({ 
+        error: 'Email already registered as a student' 
+      });
+    }
+    
+    const parent = await Parent.create(req.body);
     console.log("Parent created:", parent);
     res.status(201).json(parent);
   } catch (error: any) {
@@ -33,7 +49,7 @@ export const getParentByUId = async (req: Request, res: Response) => {
     console.log("Fetching parent with ID:", req.params.id);
 
     const parent = await Parent.findOne({uid: req.params.id});
-    if (!parent) res.status(404).json({ error: 'Parent not found' });
+    if (!parent) res.status(201).json({ error: 'Parent not found' });
 
     console.log("Parent fetched:", parent);
     res.status(200).json(parent);
